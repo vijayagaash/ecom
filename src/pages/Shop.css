@@ -1,0 +1,153 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+}
+
+.shop-container {
+  padding: 0px;
+  width: 100%;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #000000;
+  color: white;
+  padding: 10px 20px;
+}
+
+.logo {
+  font-size: 24px;
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+}
+
+.menu li a {
+  color: white;
+  text-decoration: none;
+}
+
+.title {
+  margin: 30px 0 10px 0;
+  text-align: center;
+}
+
+.filter-bar {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filter-btn {
+  margin: 5px;
+  padding: 8px 16px;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+}
+
+.filter-btn.active {
+  background: #000000;
+  color: white;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  position: relative;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #fff;
+}
+.product-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+}
+.wishlist-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 22px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+.wishlist-icon:hover {
+  transform: scale(1.2);
+}
+
+.card-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.card-buttons button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.card-buttons button:last-child {
+  background-color: #dc3545;
+}
+
+.price {
+  color: green;
+  font-weight: bold;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000000;
+  color: white;
+  padding: 15px 30px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.menu li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.icons {
+  display: flex;
+  gap: 15px;
+  font-size: 18px;
+}
+
+.icon {
+  
+  cursor: pointer;
+  color: white; /* Force white color */
+  font-size: 18px;
+}
+
