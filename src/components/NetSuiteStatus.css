@@ -1,0 +1,189 @@
+.netsuite-status {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.status-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.status-icon {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.status-info h4 {
+    margin: 0 0 5px 0;
+    color: #343a40;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.netsuite-status-text {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.netsuite-status-text.success {
+    color: #28a745;
+}
+
+.netsuite-status-text.warning {
+    color: #ffc107;
+}
+
+.status-details {
+    background: #fff;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border-left: 4px solid #007bff;
+}
+
+.status-details p {
+    margin: 0;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.4;
+}
+
+.retry-section {
+    margin: 15px 0;
+}
+
+.retry-button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.retry-button:hover:not(:disabled) {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+.retry-button:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.status-message {
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.status-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.integration-info {
+    background: #e8f4fd;
+    border: 1px solid #bee5eb;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.integration-info h5 {
+    margin: 0 0 10px 0;
+    color: #0c5460;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.integration-info ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.integration-info li {
+    font-size: 13px;
+    color: #0c5460;
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .netsuite-status {
+        padding: 15px;
+        margin: 10px 0;
+    }
+    
+    .status-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .retry-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Animation for status updates */
+.netsuite-status {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

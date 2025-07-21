@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Admin.css';
 
 function AddProduct() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     price: '',
+    category: '',
     url: ''
   });
 
@@ -25,135 +30,184 @@ function AddProduct() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios.post("http://localhost:8080/api/products", formData)
-      .then(() => {
-        fetchProducts();
-        setFormData({ name: '', description: '', price: '', url: '' });
-      })
-      .catch(err => console.error(err));
+    setLoading(true);
+    try {
+      await axios.post("http://localhost:8080/api/products", formData);
+      await fetchProducts();
+      setFormData({ name: '', description: '', price: '', category: '', url: '' });
+      alert('Product added successfully!');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to add product. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDelete = (id) => {
-    axios.delete(`http://localhost:8080/api/products/${id}`)
-      .then(() => fetchProducts())
-      .catch(err => console.error(err));
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this product?')) {
+      try {
+        const response = await axios.delete(`http://localhost:8080/api/products/${id}`);
+        console.log('Delete response:', response);
+        
+        await fetchProducts();
+        alert('Product deleted successfully!');
+      } catch (err) {
+        console.error('Delete product error:', err);
+        console.error('Error response:', err.response);
+        
+        let errorMessage = 'Failed to delete product. Please try again.';
+        
+        if (err.response) {
+          // Server responded with error status
+          if (err.response.status === 404) {
+            errorMessage = 'Product not found. It may have already been deleted.';
+          } else if (err.response.status === 409) {
+            errorMessage = err.response.data?.message || 'Cannot delete product. It may be referenced in existing orders.';
+          } else if (err.response.status === 500) {
+            errorMessage = err.response.data?.message || 'Server error occurred while deleting product.';
+          } else {
+            errorMessage = err.response.data?.message || `Failed to delete product: ${err.response.statusText}`;
+          }
+        } else if (err.request) {
+          // Network error - check if server is running
+          errorMessage = 'Network error. Please check if the server is running at http://localhost:8080';
+        }
+        
+        alert(errorMessage);
+      }
+    }
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>Add New Product</h2>
+    <div className="admin-page">
+      <div className="admin-form-container">
+        <div className="admin-form-header">
+          <h2>Add New Product</h2>
+          <p>Add products to your store inventory</p>
+        </div>
 
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <input type="text" name="name" placeholder="Product Name" value={formData.name} onChange={handleChange} required style={styles.input} />
-        <input type="text" name="description" placeholder="Product Description" value={formData.description} onChange={handleChange} required style={styles.input} />
-        <input type="number" name="price" placeholder="Price (₹)" value={formData.price} onChange={handleChange} required style={styles.input} />
-        <input type="text" name="url" placeholder="Image URL" value={formData.url} onChange={handleChange} required style={styles.input} />
-        <button type="submit" style={styles.addBtn}>Add Product</button>
-      </form>
-
-      <h3 style={styles.subHeading}>Available Products</h3>
-      <div style={styles.grid}>
-        {products.map(p => (
-          <div key={p.id} style={styles.card}>
-            <img src={p.url} alt={p.name} style={styles.image} />
-            <h4 style={styles.cardTitle}>{p.name}</h4>
-            <p style={styles.desc}>{p.description}</p>
-            <p style={styles.price}>₹{p.price}</p>
-            <button onClick={() => handleDelete(p.id)} style={styles.deleteBtn}>Delete</button>
+        <form onSubmit={handleSubmit} className="admin-form">
+          <div className="form-group">
+            <label className="form-label">Product Name</label>
+            <input 
+              type="text" 
+              name="name" 
+              placeholder="Enter product name" 
+              value={formData.name} 
+              onChange={handleChange} 
+              required 
+              className="form-input"
+            />
           </div>
-        ))}
+
+          <div className="form-group">
+            <label className="form-label">Description</label>
+            <textarea 
+              name="description" 
+              placeholder="Enter product description" 
+              value={formData.description} 
+              onChange={handleChange} 
+              required 
+              className="form-textarea"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Category</label>
+            <select 
+              name="category" 
+              value={formData.category} 
+              onChange={handleChange} 
+              required 
+              className="form-select"
+            >
+              <option value="">Select Category</option>
+              <option value="T-shirt">T-shirt</option>
+              <option value="Formals">Formals</option>
+              <option value="Vest">Vest</option>
+              <option value="Hoodie">Hoodie</option>
+              <option value="Accessories">Accessories</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Price (₹)</label>
+            <input 
+              type="number" 
+              name="price" 
+              placeholder="Enter price" 
+              value={formData.price} 
+              onChange={handleChange} 
+              required 
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Image URL</label>
+            <input 
+              type="url" 
+              name="url" 
+              placeholder="Enter image URL" 
+              value={formData.url} 
+              onChange={handleChange} 
+              required 
+              className="form-input"
+            />
+          </div>
+
+          <button type="submit" className="form-submit" disabled={loading}>
+            {loading ? 'Adding Product...' : 'Add Product'}
+          </button>
+        </form>
+
+        <div className="admin-navigation">
+          <button 
+            onClick={() => navigate('/admin-dashboard')} 
+            className="refresh-btn"
+          >
+            ← Back to Dashboard
+          </button>
+        </div>
+      </div>
+
+      <div className="admin-form-container inventory-section">
+        <div className="admin-form-header">
+          <h2>Product Inventory</h2>
+          <p>Manage your existing products</p>
+        </div>
+
+        <div className="admin-grid">
+          {products.map(p => (
+            <div key={p.id} className="admin-card">
+              <img src={p.url} alt={p.name} />
+              <h4>{p.name}</h4>
+              <p>{p.description}</p>
+              <div className="product-details">
+                <span className="price">₹{p.price}</span>
+                <span className="category-tag">
+                  {p.category || 'No Category'}
+                </span>
+              </div>
+              <button onClick={() => handleDelete(p.id)} className="delete-btn">
+                Delete Product
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {products.length === 0 && (
+          <div className="empty-state">
+            <h3>No products found</h3>
+            <p>Add your first product using the form above</p>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    padding: "40px",
-    fontFamily: "'Segoe UI', sans-serif",
-    backgroundColor: "#f4f6f8",
-    minHeight: "100vh"
-  },
-  heading: {
-    textAlign: "center",
-    fontSize: "28px",
-    marginBottom: "30px"
-  },
-  subHeading: {
-    marginTop: "50px",
-    fontSize: "24px"
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
-    maxWidth: "500px",
-    margin: "auto",
-    backgroundColor: "#fff",
-    padding: "25px",
-    borderRadius: "10px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
-  },
-  input: {
-    padding: "12px",
-    fontSize: "16px",
-    borderRadius: "6px",
-    border: "1px solid #ccc"
-  },
-  addBtn: {
-    padding: "12px",
-    backgroundColor: "#27ae60",
-    color: "#fff",
-    fontSize: "16px",
-    fontWeight: "bold",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer"
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: "25px",
-    marginTop: "30px"
-  },
-  card: {
-    backgroundColor: "#fff",
-    borderRadius: "10px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-    padding: "15px",
-    textAlign: "center",
-    transition: "transform 0.2s ease"
-  },
-  image: {
-    width: "100%",
-    height: "150px",
-    objectFit: "cover",
-    borderRadius: "6px",
-    marginBottom: "10px"
-  },
-  cardTitle: {
-    fontSize: "18px",
-    margin: "10px 0 5px 0"
-  },
-  desc: {
-    fontSize: "14px",
-    color: "#555"
-  },
-  price: {
-    fontWeight: "bold",
-    color: "#2c3e50",
-    margin: "10px 0"
-  },
-  deleteBtn: {
-    background: "#e74c3c",
-    color: "#fff",
-    border: "none",
-    padding: "8px 12px",
-    borderRadius: "5px",
-    cursor: "pointer"
-  }
-};
 
 export default AddProduct;

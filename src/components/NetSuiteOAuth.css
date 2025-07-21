@@ -1,0 +1,257 @@
+.netsuite-oauth-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.oauth-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.oauth-header h2 {
+  color: #333;
+  margin: 0;
+}
+
+.refresh-btn {
+  padding: 8px 16px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.refresh-btn:hover:not(:disabled) {
+  background: #e9ecef;
+}
+
+.refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.oauth-status {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 6px;
+  margin-bottom: 30px;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.status-indicator.authorized .status-dot {
+  background: #28a745;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+}
+
+.status-indicator.unauthorized .status-dot {
+  background: #dc3545;
+  box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+}
+
+.status-indicator.authorized {
+  color: #28a745;
+}
+
+.status-indicator.unauthorized {
+  color: #dc3545;
+}
+
+.status-details {
+  display: grid;
+  gap: 10px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.detail-item .label {
+  font-weight: 500;
+  color: #666;
+}
+
+.detail-item .value {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+}
+
+.detail-item .value.has-token {
+  color: #28a745;
+}
+
+.detail-item .value.no-token {
+  color: #dc3545;
+}
+
+.oauth-actions {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.authorized-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #545b62;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled, .btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.oauth-info {
+  background: #e9ecef;
+  padding: 20px;
+  border-radius: 6px;
+  border-left: 4px solid #007bff;
+}
+
+.oauth-info h3 {
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.oauth-info ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.oauth-info li {
+  margin-bottom: 8px;
+  color: #666;
+}
+
+.setup-instructions {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #dee2e6;
+}
+
+.setup-instructions h4 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.setup-instructions ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.setup-instructions li {
+  margin-bottom: 8px;
+  color: #666;
+}
+
+.setup-instructions code {
+  background: #f8f9fa;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  color: #e83e8c;
+  border: 1px solid #dee2e6;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 16px;
+}
+
+/* Animation for loading states */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .netsuite-oauth-container {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .oauth-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .authorized-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}

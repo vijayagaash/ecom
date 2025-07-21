@@ -1,0 +1,360 @@
+/* Invoice Modal Styles */
+.invoice-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10001;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.invoice-modal {
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.2s ease-out;
+}
+
+/* Header */
+.invoice-header {
+  background: #f9fafb;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.invoice-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+/* Content */
+.invoice-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.invoice-section {
+  margin-bottom: 32px;
+}
+
+.invoice-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Order Info Grid */
+.order-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.info-item .label {
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.info-item .value {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.info-item .value.total {
+  color: #059669;
+  font-size: 18px;
+}
+
+.status-pending {
+  color: #d97706 !important;
+}
+
+.status-confirmed {
+  color: #2563eb !important;
+}
+
+.status-shipped {
+  color: #7c3aed !important;
+}
+
+.status-delivered {
+  color: #059669 !important;
+}
+
+.status-cancelled {
+  color: #dc2626 !important;
+}
+
+/* Customer Info */
+.customer-info p {
+  margin: 8px 0;
+  color: #4b5563;
+}
+
+.customer-info .address {
+  background: #f9fafb;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  margin-top: 8px;
+}
+
+/* Items Table */
+.items-table {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 16px;
+  padding: 16px;
+  background: #f9fafb;
+  font-weight: 600;
+  color: #1f2937;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid #f3f4f6;
+  align-items: center;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.product-name {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.product-desc {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Totals Section */
+.totals-section {
+  max-width: 300px;
+  margin-left: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.total-row:last-child {
+  border-bottom: none;
+}
+
+.total-row.final-total {
+  background: #f9fafb;
+  font-weight: 600;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+/* Actions */
+.invoice-actions {
+  padding: 20px 24px;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background: #1f2937;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #374151;
+}
+
+.btn-secondary {
+  background: white;
+  color: #1f2937;
+  border: 1px solid #d1d5db;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #f9fafb;
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Spinner Animation */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .invoice-modal {
+    width: 95%;
+    max-height: 95vh;
+  }
+  
+  .invoice-header {
+    padding: 16px 20px;
+  }
+  
+  .invoice-content {
+    padding: 20px;
+  }
+  
+  .order-info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .table-header {
+    display: none;
+  }
+  
+  .table-row {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 16px;
+  }
+  
+  .invoice-actions {
+    flex-direction: column;
+    padding: 16px 20px;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .invoice-modal {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+  }
+  
+  .invoice-header h2 {
+    font-size: 18px;
+  }
+}

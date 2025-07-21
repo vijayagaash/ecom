@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Admin.css';
 
 function AddEmployee() {
+  const navigate = useNavigate();
   const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     emp_name: '',
     emp_email: '',
@@ -24,162 +28,131 @@ function AddEmployee() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios.post("http://localhost:8080/api/employees", formData)
-      .then(() => {
-        fetchEmployees();
-        setFormData({ emp_name: '', emp_email: '', emp_password: '' });
-      })
-      .catch(err => console.error(err));
+    setLoading(true);
+    try {
+      await axios.post("http://localhost:8080/api/employees", formData);
+      await fetchEmployees();
+      setFormData({ emp_name: '', emp_email: '', emp_password: '' });
+      alert('Employee added successfully!');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to add employee. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDelete = (id) => {
-    axios.delete(`http://localhost:8080/api/employees/${id}`)
-      .then(() => fetchEmployees())
-      .catch(err => console.error(err));
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this employee?')) {
+      try {
+        await axios.delete(`http://localhost:8080/api/employees/${id}`);
+        await fetchEmployees();
+        alert('Employee deleted successfully!');
+      } catch (err) {
+        console.error(err);
+        alert('Failed to delete employee. Please try again.');
+      }
+    }
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>Add New Employee</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <input
-          type="text"
-          name="emp_name"
-          placeholder="Full Name"
-          value={formData.emp_name}
-          onChange={handleChange}
-          required
-          style={styles.input}
-        />
-        <input
-          type="email"
-          name="emp_email"
-          placeholder="Email"
-          value={formData.emp_email}
-          onChange={handleChange}
-          required
-          style={styles.input}
-        />
-        <input
-          type="password"
-          name="emp_password"
-          placeholder="Password"
-          value={formData.emp_password}
-          onChange={handleChange}
-          required
-          style={styles.input}
-        />
-        <button type="submit" style={styles.addBtn}>Add Employee</button>
-      </form>
+    <div className="admin-page">
+      <div className="admin-form-container">
+        <div className="admin-form-header">
+          <h2>Add New Employee</h2>
+          <p>Register new team members to your organization</p>
+        </div>
 
-      <h3 style={styles.subHeading}>Employee List</h3>
-      <div style={styles.grid}>
-        {employees.map(emp => (
-          <div key={emp.id} style={styles.card}>
-            <div style={styles.avatar}>
-              <span>{emp.emp_name?.charAt(0).toUpperCase()}</span>
-            </div>
-            <h4 style={styles.name}>{emp.emp_name}</h4>
-            <p style={styles.email}>{emp.emp_email}</p>
-            <button onClick={() => handleDelete(emp.id)} style={styles.deleteBtn}>Delete</button>
+        <form onSubmit={handleSubmit} className="admin-form">
+          <div className="form-group">
+            <label className="form-label">Full Name</label>
+            <input
+              type="text"
+              name="emp_name"
+              placeholder="Enter employee full name"
+              value={formData.emp_name}
+              onChange={handleChange}
+              required
+              className="form-input"
+            />
           </div>
-        ))}
+
+          <div className="form-group">
+            <label className="form-label">Email Address</label>
+            <input
+              type="email"
+              name="emp_email"
+              placeholder="Enter email address"
+              value={formData.emp_email}
+              onChange={handleChange}
+              required
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <input
+              type="password"
+              name="emp_password"
+              placeholder="Enter secure password"
+              value={formData.emp_password}
+              onChange={handleChange}
+              required
+              className="form-input"
+            />
+          </div>
+
+          <button type="submit" className="form-submit" disabled={loading}>
+            {loading ? 'Adding Employee...' : 'Add Employee'}
+          </button>
+        </form>
+
+        <div className="admin-navigation">
+          <button 
+            onClick={() => navigate('/admin-dashboard')} 
+            className="refresh-btn"
+          >
+            ← Back to Dashboard
+          </button>
+        </div>
+      </div>
+
+      <div className="admin-form-container employees-section">
+        <div className="admin-form-header">
+          <h2>Employee Directory</h2>
+          <p>Manage your team members</p>
+        </div>
+
+        <div className="admin-grid">
+          {employees.map(emp => (
+            <div key={emp.id} className="admin-card">
+              <div className="employee-avatar">
+                {emp.emp_name?.charAt(0).toUpperCase()}
+              </div>
+              <h4>{emp.emp_name}</h4>
+              <p className="employee-email">{emp.emp_email}</p>
+              <div className="employee-id">
+                Employee ID: {emp.id}
+              </div>
+              <button onClick={() => handleDelete(emp.id)} className="delete-btn">
+                Remove Employee
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {employees.length === 0 && (
+          <div className="empty-state">
+            <h3>No employees found</h3>
+            <p>Add your first team member using the form above</p>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    padding: "40px",
-    fontFamily: "'Segoe UI', sans-serif",
-    backgroundColor: "#f4f6f8",
-    minHeight: "100vh"
-  },
-  heading: {
-    textAlign: "center",
-    fontSize: "28px",
-    marginBottom: "30px"
-  },
-  subHeading: {
-    fontSize: "24px",
-    marginTop: "40px",
-    marginBottom: "10px"
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
-    maxWidth: "500px",
-    margin: "auto",
-    backgroundColor: "#fff",
-    padding: "25px",
-    borderRadius: "10px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
-  },
-  input: {
-    padding: "12px",
-    fontSize: "16px",
-    borderRadius: "6px",
-    border: "1px solid #ccc"
-  },
-  addBtn: {
-    padding: "12px",
-    backgroundColor: "#2c3e50",
-    color: "#fff",
-    fontSize: "16px",
-    fontWeight: "bold",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer"
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: "20px",
-    marginTop: "20px"
-  },
-  card: {
-    backgroundColor: "#fff",
-    borderRadius: "10px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-    padding: "15px",
-    textAlign: "center",
-    transition: "transform 0.2s ease"
-  },
-  avatar: {
-    width: "50px",
-    height: "50px",
-    backgroundColor: "#3498db",
-    color: "#fff",
-    borderRadius: "50%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    margin: "auto",
-    marginBottom: "10px",
-    fontSize: "20px",
-    fontWeight: "bold"
-  },
-  name: {
-    fontSize: "18px",
-    margin: "10px 0 5px 0"
-  },
-  email: {
-    fontSize: "14px",
-    color: "#666",
-    marginBottom: "10px"
-  },
-  deleteBtn: {
-    background: "#e74c3c",
-    color: "#fff",
-    border: "none",
-    padding: "8px 12px",
-    borderRadius: "5px",
-    cursor: "pointer"
-  }
-};
 
 export default AddEmployee;

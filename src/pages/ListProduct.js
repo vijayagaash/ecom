@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Admin.css';
 
 function ListProduct() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
 
@@ -17,59 +20,67 @@ function ListProduct() {
   );
 
   return (
-    <div style={styles.container}>
-      <h2>All Products</h2>
-      <input
-        type="text"
-        placeholder="Search products..."
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-        style={styles.search}
-      />
+    <div className="admin-page">
+      <div className="admin-form-container">
+        <div className="admin-form-header">
+          <h2>Product Catalog</h2>
+          <p>Browse and search through all products in your inventory</p>
+        </div>
 
-      <div style={styles.grid}>
-        {filteredProducts.map(p => (
-          <div key={p.id} style={styles.card}>
-            <img src={p.url} alt={p.name} style={styles.image} />
-            <h4>{p.name}</h4>
-            <p>{p.description}</p>
-            <p style={{ fontWeight: "bold" }}>₹{p.price}</p>
+        <div className="admin-navigation">
+          <button 
+            onClick={() => navigate('/admin-dashboard')} 
+            className="refresh-btn"
+          >
+            ← Back to Dashboard
+          </button>
+          <button 
+            onClick={() => navigate('/add-product')} 
+            className="form-submit"
+          >
+            Add New Product
+          </button>
+        </div>
+      </div>
+
+      <div className="admin-search">
+        <input
+          type="text"
+          placeholder="Search products by name or description..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="search-input"
+        />
+      </div>
+
+      <div className="admin-form-container">
+        <div className="admin-grid">
+          {filteredProducts.map(p => (
+            <div key={p.id} className="admin-card">
+              <img src={p.url} alt={p.name} />
+              <h4>{p.name}</h4>
+              <p>{p.description}</p>
+              <div className="product-details">
+                <span className="price">₹{p.price}</span>
+                <span className="category-tag">
+                  {p.category || 'No Category'}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {filteredProducts.length === 0 && (
+          <div className="empty-state">
+            <h3>No products found</h3>
+            <p>
+              {search ? `No products match "${search}"` : 'No products available in inventory'}
+            </p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
 }
-
-const styles = {
-  container: { padding: "30px", fontFamily: "Arial" },
-  search: {
-    width: "100%",
-    padding: "10px",
-    marginBottom: "20px",
-    fontSize: "16px",
-    borderRadius: "6px",
-    border: "1px solid #ccc"
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: "20px"
-  },
-  card: {
-    backgroundColor: "#fff",
-    padding: "15px",
-    borderRadius: "10px",
-    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-    textAlign: "center"
-  },
-  image: {
-    width: "100%",
-    height: "150px",
-    objectFit: "cover",
-    marginBottom: "10px",
-    borderRadius: "6px"
-  }
-};
 
 export default ListProduct;

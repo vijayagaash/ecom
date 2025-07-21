@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Admin.css';
 
 function ListEmployee() {
+  const navigate = useNavigate();
   const [employees, setEmployees] = useState([]);
   const [search, setSearch] = useState('');
 
@@ -17,50 +20,66 @@ function ListEmployee() {
   );
 
   return (
-    <div style={styles.container}>
-      <h2>All Employees</h2>
-      <input
-        type="text"
-        placeholder="Search employees..."
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-        style={styles.search}
-      />
+    <div className="admin-page">
+      <div className="admin-form-container">
+        <div className="admin-form-header">
+          <h2>Employee Directory</h2>
+          <p>Browse and manage all employees in your organization</p>
+        </div>
 
-      <div style={styles.grid}>
-        {filteredEmployees.map(emp => (
-          <div key={emp.id} style={styles.card}>
-            <h4>{emp.emp_name}</h4>
-            <p>{emp.emp_email}</p>
+        <div className="admin-navigation">
+          <button 
+            onClick={() => navigate('/admin-dashboard')} 
+            className="refresh-btn"
+          >
+            ← Back to Dashboard
+          </button>
+          <button 
+            onClick={() => navigate('/add-employee')} 
+            className="form-submit"
+          >
+            Add New Employee
+          </button>
+        </div>
+      </div>
+
+      <div className="admin-search">
+        <input
+          type="text"
+          placeholder="Search employees by name or email..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="search-input"
+        />
+      </div>
+
+      <div className="admin-form-container">
+        <div className="admin-grid">
+          {filteredEmployees.map(emp => (
+            <div key={emp.id} className="admin-card">
+              <div className="employee-avatar">
+                {emp.emp_name?.charAt(0).toUpperCase()}
+              </div>
+              <h4>{emp.emp_name}</h4>
+              <p className="employee-email">{emp.emp_email}</p>
+              <div className="employee-id">
+                Employee ID: {emp.id}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {filteredEmployees.length === 0 && (
+          <div className="empty-state">
+            <h3>No employees found</h3>
+            <p>
+              {search ? `No employees match "${search}"` : 'No employees available in directory'}
+            </p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
 }
-
-const styles = {
-  container: { padding: "30px", fontFamily: "Arial" },
-  search: {
-    width: "100%",
-    padding: "10px",
-    marginBottom: "20px",
-    fontSize: "16px",
-    borderRadius: "6px",
-    border: "1px solid #ccc"
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: "20px"
-  },
-  card: {
-    backgroundColor: "#fff",
-    padding: "15px",
-    borderRadius: "10px",
-    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-    textAlign: "center"
-  }
-};
 
 export default ListEmployee;

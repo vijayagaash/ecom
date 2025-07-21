@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './CustomerAuth.css';
 
 function CustomerAuth() {
   const [isSignUp, setIsSignUp] = useState(true);
@@ -11,6 +12,7 @@ function CustomerAuth() {
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -22,6 +24,7 @@ function CustomerAuth() {
     e.preventDefault();
     setError('');
     setSuccess('');
+    setLoading(true);
 
     try {
       if (isSignUp) {
@@ -40,102 +43,105 @@ function CustomerAuth() {
           localStorage.setItem("customer", JSON.stringify(user));
           localStorage.setItem("customerId", user.id);
           navigate("/shop");
-        // ✅ Go to shop page
         } else {
           setError("Invalid credentials");
         }
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");
+      console.error('Auth error:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={styles.container}>
-      <h2>{isSignUp ? "Customer Sign Up" : "Customer Sign In"}</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        {isSignUp && (
-          <input
-            type="text"
-            name="cust_name"
-            placeholder="Name"
-            value={formData.cust_name}
-            onChange={handleChange}
-            required
-            style={styles.input}
-          />
-        )}
-        <input
-          type="email"
-          name="cust_email"
-          placeholder="Email"
-          value={formData.cust_email}
-          onChange={handleChange}
-          required
-          style={styles.input}
-        />
-        <input
-          type="password"
-          name="cust_password"
-          placeholder="Password"
-          value={formData.cust_password}
-          onChange={handleChange}
-          required
-          style={styles.input}
-        />
-        <button type="submit" style={styles.button}>
-          {isSignUp ? "Sign Up" : "Sign In"}
-        </button>
-      </form>
+    <div className="customer-auth-container">
+      <div className="customer-auth-card">
+        <div className="auth-header">
+          <h2>{isSignUp ? "Create Account" : "Welcome Back"}</h2>
+          <p>{isSignUp ? "Join us to start shopping" : "Sign in to your account"}</p>
+        </div>
 
-      <p style={{ marginTop: "10px" }}>
-        {isSignUp ? "Already have an account?" : "Don't have an account?"}
-        <button onClick={() => setIsSignUp(!isSignUp)} style={styles.toggleBtn}>
-          {isSignUp ? "Sign In" : "Sign Up"}
-        </button>
-      </p>
+        <form onSubmit={handleSubmit} className="auth-form">
+          {isSignUp && (
+            <div className="form-group">
+              <label>Full Name</label>
+              <input
+                type="text"
+                name="cust_name"
+                placeholder="Enter your full name"
+                value={formData.cust_name}
+                onChange={handleChange}
+                required
+                className="auth-input"
+                disabled={loading}
+              />
+            </div>
+          )}
+          
+          <div className="form-group">
+            <label>Email Address</label>
+            <input
+              type="email"
+              name="cust_email"
+              placeholder="Enter your email"
+              value={formData.cust_email}
+              onChange={handleChange}
+              required
+              className="auth-input"
+              disabled={loading}
+            />
+          </div>
+          
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              name="cust_password"
+              placeholder="Enter your password"
+              value={formData.cust_password}
+              onChange={handleChange}
+              required
+              className="auth-input"
+              disabled={loading}
+            />
+          </div>
 
-      {success && <p style={{ color: "green" }}>{success}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <div className="error-message">{error}</div>}
+          {success && <div className="success-message">{success}</div>}
+
+          <button type="submit" className="auth-btn" disabled={loading}>
+            {loading ? (isSignUp ? 'Creating Account...' : 'Signing In...') : (isSignUp ? "Create Account" : "Sign In")}
+          </button>
+        </form>
+
+        <div className="auth-toggle">
+          <p>
+            {isSignUp ? "Already have an account?" : "Don't have an account?"}
+            <button 
+              onClick={() => {
+                setIsSignUp(!isSignUp);
+                setError('');
+                setSuccess('');
+                setFormData({ cust_name: '', cust_email: '', cust_password: '' });
+              }} 
+              className="toggle-btn"
+              disabled={loading}
+            >
+              {isSignUp ? "Sign In" : "Sign Up"}
+            </button>
+          </p>
+        </div>
+
+        <div className="auth-footer">
+          <button onClick={() => navigate('/')} className="back-home-btn">
+            Back to Home
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    maxWidth: "400px",
-    margin: "50px auto",
-    padding: "20px",
-    border: "1px solid #ccc",
-    borderRadius: "10px",
-    backgroundColor: "#f9f9f9",
-    textAlign: "center"
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px"
-  },
-  input: {
-    padding: "10px",
-    fontSize: "16px"
-  },
-  button: {
-    padding: "10px",
-    backgroundColor: "#007bff",
-    color: "white",
-    fontSize: "16px",
-    border: "none",
-    cursor: "pointer"
-  },
-  toggleBtn: {
-    marginLeft: "10px",
-    background: "none",
-    border: "none",
-    color: "#007bff",
-    cursor: "pointer",
-    fontWeight: "bold"
-  }
-};
 
 export default CustomerAuth;
