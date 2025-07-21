@@ -15,74 +15,82 @@ function Shop() {
   
   const customerId = localStorage.getItem("customerId");
 
-  // Category configurations with professional business themes and UI elements
+  // Sophisticated Category configurations using refined color palette
   const categoryConfig = {
     "Electronics": {
-      icon: "⚡",
-      color: "#1f2937",
-      gradient: "linear-gradient(135deg, #1f2937 0%, #374151 30%, #4b5563 70%, #6b7280 100%)",
+      color: "#071739",
+      gradient: "linear-gradient(135deg, #071739 0%, #4B6382 50%, #A4B5C4 100%)",
       bgPattern: "circuit-pattern",
-      description: "Latest gadgets and technology",
-      features: ["Tech Specs", "Warranty", "Reviews"]
+      description: "Professional technology solutions and electronics",
+      features: ["Technical Specifications", "Warranty Coverage", "Expert Reviews"],
+      accent: "#CDD5DB",
+      textColor: "#071739"
     },
     "Dress": {
-      icon: "👗",
-      color: "#374151",
-      gradient: "linear-gradient(135deg, #374151 0%, #4b5563 30%, #6b7280 70%, #9ca3af 100%)",
+      color: "#4B6382",
+      gradient: "linear-gradient(135deg, #4B6382 0%, #A4B5C4 50%, #CDD5DB 100%)",
       bgPattern: "fashion-pattern",
-      description: "Trendy fashion and clothing",
-      features: ["Size Guide", "Material", "Style"]
+      description: "Professional attire and business fashion",
+      features: ["Size Guide", "Premium Materials", "Professional Style"],
+      accent: "#E3C39D",
+      textColor: "#071739"
     },
     "Accessories": {
-      icon: "💎",
-      color: "#475569",
-      gradient: "linear-gradient(135deg, #475569 0%, #64748b 30%, #94a3b8 70%, #cbd5e1 100%)",
+      color: "#A68868",
+      gradient: "linear-gradient(135deg, #A68868 0%, #E3C39D 50%, #CDD5DB 100%)",
       bgPattern: "luxury-pattern",
-      description: "Stylish accessories and jewelry",
-      features: ["Premium Quality", "Craftsmanship", "Design"]
+      description: "Executive accessories and professional gear",
+      features: ["Premium Quality", "Craftsmanship", "Professional Design"],
+      accent: "#CDD5DB",
+      textColor: "#071739"
     },
     "Kids": {
-      icon: "🧸",
-      color: "#065f46",
-      gradient: "linear-gradient(135deg, #065f46 0%, #047857 30%, #059669 70%, #10b981 100%)",
+      color: "#A4B5C4",
+      gradient: "linear-gradient(135deg, #CDD5DB 0%, #A4B5C4 50%, #4B6382 100%)",
       bgPattern: "kids-pattern",
-      description: "Fun and safe products for children",
-      features: ["Safety Certified", "Age Appropriate", "Educational"]
+      description: "Safe and educational products for children",
+      features: ["Safety Certified", "Age Appropriate", "Educational"],
+      accent: "#E3C39D",
+      textColor: "#071739"
     },
     "Stationery": {
-      icon: "✏️",
-      color: "#581c87",
-      gradient: "linear-gradient(135deg, #581c87 0%, #6d28d9 30%, #7c3aed 70%, #8b5cf6 100%)",
+      color: "#071739",
+      gradient: "linear-gradient(135deg, #071739 0%, #4B6382 50%, #CDD5DB 100%)",
       bgPattern: "office-pattern",
-      description: "Office and school supplies",
-      features: ["Quality Paper", "Ergonomic", "Durable"]
+      description: "Premium office supplies and stationery",
+      features: ["Quality Materials", "Ergonomic Design", "Professional Grade"],
+      accent: "#A4B5C4",
+      textColor: "#071739"
     },
     "Groceries": {
-      icon: "🛒",
-      color: "#134e4a",
-      gradient: "linear-gradient(135deg, #134e4a 0%, #0f766e 30%, #0d9488 70%, #14b8a6 100%)",
+      color: "#4B6382",
+      gradient: "linear-gradient(135deg, #A4B5C4 0%, #4B6382 50%, #E3C39D 100%)",
       bgPattern: "organic-pattern",
-      description: "Fresh groceries and daily essentials",
-      features: ["Fresh Quality", "Organic Options", "Daily Essentials"]
+      description: "Premium groceries and daily essentials",
+      features: ["Fresh Quality", "Organic Options", "Daily Essentials"],
+      accent: "#CDD5DB",
+      textColor: "#071739"
     },
     "Home Appliances": {
-      icon: "🏠",
-      color: "#1e293b",
-      gradient: "linear-gradient(135deg, #1e293b 0%, #334155 30%, #475569 70%, #64748b 100%)",
+      color: "#A68868",
+      gradient: "linear-gradient(135deg, #071739 0%, #A68868 50%, #E3C39D 100%)",
       bgPattern: "home-pattern",
-      description: "Modern appliances for your home",
-      features: ["Energy Efficient", "Smart Features", "Warranty"]
+      description: "Smart appliances for modern homes",
+      features: ["Energy Efficient", "Smart Features", "Extended Warranty"],
+      accent: "#CDD5DB",
+      textColor: "#071739"
     }
   };
 
   const getCurrentCategoryConfig = () => {
     return categoryConfig[filter] || {
-      icon: "🛍️",
-      color: "#1f2937",
-      gradient: "linear-gradient(135deg, #1f2937 0%, #374151 30%, #4b5563 70%, #6b7280 100%)",
+      color: "#071739",
+      gradient: "linear-gradient(135deg, #071739 0%, #4B6382 50%, #A4B5C4 100%)",
       bgPattern: "default-pattern",
-      description: "All categories available",
-      features: ["Quality Products", "Best Prices", "Fast Delivery"]
+      description: "Professional e-commerce solutions for all categories",
+      features: ["Premium Quality", "Professional Service", "Reliable Delivery"],
+      accent: "#CDD5DB",
+      textColor: "#071739"
     };
   };
 
@@ -180,7 +188,7 @@ function Shop() {
         <div className="header-content">
           <div className="logo-section">
             <h1 className="shop-logo" onClick={() => navigate('/')}>
-              {currentConfig.icon} E-Com Store
+              E-Com Store
             </h1>
             <span className="shop-tagline">{currentConfig.description}</span>
           </div>
@@ -209,12 +217,33 @@ function Shop() {
         </div>
       </header>
 
-      {/* Dynamic Hero Section */}
+      {/* Dynamic Hero Section with Categories Above Headline */}
       <section className="shop-hero" style={{ background: currentConfig.gradient }}>
         <div className={`hero-content ${currentConfig.bgPattern}`}>
+          {/* Category Navigation Above Headline */}
+          <div className="hero-categories">
+            {categories.map(category => {
+              const config = categoryConfig[category];
+              return (
+                <button
+                  key={category}
+                  className={`hero-category-btn ${filter === category ? 'active' : ''}`}
+                  onClick={() => setFilter(category)}
+                  style={{
+                    '--category-color': config?.color || '#495057',
+                    '--category-gradient': config?.gradient || 'linear-gradient(135deg, #071739 0%, #4B6382 50%, #A4B5C4 100%)'
+                  }}
+                >
+                  {category}
+                </button>
+              );
+            })}
+          </div>
+          
           <div className="hero-text">
-            <h2>{currentConfig.icon} {filter === "All" ? "Discover Amazing Products" : `${filter} Collection`}</h2>
+            <h2>{filter === "All" ? "Discover Amazing Products" : `${filter} Collection`}</h2>
             <p>{currentConfig.description}</p>
+            
             <div className="category-features">
               {currentConfig.features.map((feature, index) => (
                 <span key={index} className="feature-badge">✓ {feature}</span>
@@ -236,7 +265,7 @@ function Shop() {
         </div>
       </section>
 
-      {/* Enhanced Search and Filter Section */}
+      {/* Enhanced Search Section */}
       <section className="shop-controls">
         <div className="controls-content">
           <div className="search-section">
@@ -251,28 +280,6 @@ function Shop() {
               />
             </div>
           </div>
-          
-          <div className="filter-section">
-            <h4>Categories</h4>
-            <div className="filter-buttons">
-              {categories.map(category => {
-                const config = categoryConfig[category];
-                return (
-                  <button
-                    key={category}
-                    className={`filter-btn ${filter === category ? 'active' : ''}`}
-                    onClick={() => setFilter(category)}
-                    style={{
-                      '--category-color': config?.color || '#495057',
-                      '--category-gradient': config?.gradient || 'linear-gradient(135deg, #1f2937 0%, #374151 30%, #4b5563 70%, #6b7280 100%)'
-                    }}
-                  >
-                    {config?.icon || '📦'} {category}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
         </div>
       </section>
 
@@ -281,7 +288,7 @@ function Shop() {
         <div className="products-content">
           <div className="products-header">
             <h3>
-              {currentConfig.icon} {filter === "All" ? "All Products" : filter} ({filteredProducts.length})
+              {filter === "All" ? "All Products" : filter} ({filteredProducts.length})
             </h3>
             <div className="results-info">
               {searchTerm && (
@@ -300,7 +307,7 @@ function Shop() {
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="no-products">
-              <div className="no-products-icon">{currentConfig.icon}</div>
+              <div className="no-products-icon">📦</div>
               <h4>No {filter === "All" ? "products" : filter.toLowerCase()} found</h4>
               <p>Try adjusting your search or filter criteria</p>
               <button onClick={() => { setSearchTerm(""); setFilter("All"); }} className="reset-btn">
