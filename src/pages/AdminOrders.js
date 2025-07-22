@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import InvoiceGenerator from '../components/InvoiceGenerator';
+import Loading from '../components/Loading';
 // import { useToast } from '../components/Toast';
 import './AdminOrders.css';
 
@@ -221,15 +222,11 @@ function AdminOrders() {
     return (
       <div className="admin-orders-container">
         <NotificationComponent />
-        <div className="loading-spinner">
-          <div className="loading-content">
-            <div className="loading-animation"></div>
-            <div className="loading-text">
-              <h2 className="loading-title">Loading Orders</h2>
-              <p className="loading-subtitle">Fetching order data from server...</p>
-            </div>
-          </div>
-        </div>
+        <Loading 
+          message="Loading Orders"
+          size="large"
+          fullScreen={true}
+        />
       </div>
     );
   }

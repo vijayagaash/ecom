@@ -480,6 +480,16 @@ function AdminDashboard() {
             
             <button 
               className="action-card"
+              onClick={() => navigate('/stock-management')}
+            >
+              <div>
+                <h4>Stock Management</h4>
+                <p>Monitor and adjust inventory levels</p>
+              </div>
+            </button>
+            
+            <button 
+              className="action-card"
               onClick={() => openModal('listCustomers')}
             >
               <div>

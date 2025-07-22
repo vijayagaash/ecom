@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email Test</title>
+</head>
+<body>
+    <h2>Test Email Functionality</h2>
+    <input type="email" id="emailInput" placeholder="Enter email to test" />
+    <button onclick="sendTestEmail()">Send Test Email</button>
+    <div id="result"></div>
+
+    <script>
+        function sendTestEmail() {
+            const email = document.getElementById('emailInput').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!email) {
+                resultDiv.innerHTML = '<p style="color: red;">Please enter an email address</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p>Sending email...</p>';
+            
+            fetch(`http://localhost:8080/api/test/send-email?email=${email}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    resultDiv.innerHTML = `<p style="color: green;">${data.message}</p>`;
+                } else {
+                    resultDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+                }
+            })
+            .catch(error => {
+                resultDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>

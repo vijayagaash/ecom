@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Invoice from '../components/Invoice';
+import Loading from '../components/Loading';
 import './Orders.css';
 
 function Orders() {
@@ -85,7 +86,7 @@ function Orders() {
   if (loading) {
     return (
       <div className="orders-container">
-        <div className="loading">Loading your orders...</div>
+        <Loading />
       </div>
     );
   }

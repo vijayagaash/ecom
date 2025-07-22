@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { addToCart } from '../api/cartApi';
+import Loading from '../components/Loading';
 import './Product.css';
 
 function Product() {
@@ -50,7 +51,10 @@ function Product() {
   if (loading) {
     return (
       <div className="product-container">
-        <div className="loading">Loading product...</div>
+        <Loading 
+          message="Loading product details..."
+          size="large"
+        />
       </div>
     );
   }

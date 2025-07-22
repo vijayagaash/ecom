@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Loading from '../components/Loading';
 import './CustomerManagement.css';
 
 function ViewCustomer() {
@@ -197,15 +198,11 @@ function ViewCustomer() {
     return (
       <div className="customer-management-container">
         <NotificationComponent />
-        <div className="loading-spinner">
-          <div className="loading-content">
-            <div className="loading-animation"></div>
-            <div className="loading-text">
-              <h2 className="loading-title">Loading Customers</h2>
-              <p className="loading-subtitle">Fetching customer data from server...</p>
-            </div>
-          </div>
-        </div>
+        <Loading 
+          message="Loading Customers"
+          size="large"
+          fullScreen={true}
+        />
       </div>
     );
   }

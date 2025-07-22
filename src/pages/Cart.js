@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCartItems, removeCartItem } from '../api/cartApi';
+import Loading from '../components/Loading';
 import './Cart.css';
 
 function Cart() {
@@ -68,7 +69,10 @@ function Cart() {
   if (loading) {
     return (
       <div className="cart-container">
-        <div className="loading">Loading your cart...</div>
+        <Loading 
+          message="Loading your cart..."
+          size="large"
+        />
       </div>
     );
   }

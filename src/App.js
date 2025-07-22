@@ -17,6 +17,7 @@ import ViewCustomer from './pages/ViewCustomer';
 import ListProduct from './pages/ListProduct';
 import ListEmployee from './pages/ListEmployee';
 import InvoiceEditor from './pages/InvoiceEditor';
+import StockManagement from './pages/StockManagement';
 import AIAssistant from './components/AIAssistant';
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
         <Route path="/view-customer" element={<ViewCustomer />} />
         <Route path="/list-product" element={<ListProduct />} />
         <Route path="/list-employee" element={<ListEmployee />} />
+        <Route path="/stock-management" element={<StockManagement />} />
         <Route path="/admin/invoice-editor" element={<InvoiceEditor />} />
       </Routes>
       

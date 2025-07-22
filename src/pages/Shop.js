@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Shop.css';
 import { addToCart, getCartItems } from '../api/cartApi';
+import Loading from '../components/Loading';
 
 function Shop() {
   const navigate = useNavigate();
@@ -217,30 +218,30 @@ function Shop() {
         </div>
       </header>
 
-      {/* Dynamic Hero Section with Categories Above Headline */}
+      {/* Dynamic Hero Section with Integrated Categories */}
       <section className="shop-hero" style={{ background: currentConfig.gradient }}>
         <div className={`hero-content ${currentConfig.bgPattern}`}>
-          {/* Category Navigation Above Headline */}
-          <div className="hero-categories">
-            {categories.map(category => {
-              const config = categoryConfig[category];
-              return (
-                <button
-                  key={category}
-                  className={`hero-category-btn ${filter === category ? 'active' : ''}`}
-                  onClick={() => setFilter(category)}
-                  style={{
-                    '--category-color': config?.color || '#495057',
-                    '--category-gradient': config?.gradient || 'linear-gradient(135deg, #071739 0%, #4B6382 50%, #A4B5C4 100%)'
-                  }}
-                >
-                  {category}
-                </button>
-              );
-            })}
-          </div>
-          
           <div className="hero-text">
+            {/* Integrated Category Navigation - Above Headline */}
+            <div className="hero-categories">
+              {categories.map(category => {
+                const config = categoryConfig[category];
+                return (
+                  <button
+                    key={category}
+                    className={`hero-category-btn ${filter === category ? 'active' : ''}`}
+                    onClick={() => setFilter(category)}
+                    style={{
+                      '--category-color': config?.color || '#495057',
+                      '--category-gradient': config?.gradient || 'linear-gradient(135deg, #071739 0%, #4B6382 50%, #A4B5C4 100%)'
+                    }}
+                  >
+                    {category}
+                  </button>
+                );
+              })}
+            </div>
+            
             <h2>{filter === "All" ? "Discover Amazing Products" : `${filter} Collection`}</h2>
             <p>{currentConfig.description}</p>
             
@@ -301,10 +302,10 @@ function Shop() {
           </div>
 
           {loading ? (
-            <div className="loading-section">
-              <div className="loading-spinner"></div>
-              <p>Loading {filter === "All" ? "products" : filter.toLowerCase()}...</p>
-            </div>
+            <Loading 
+              message={`Loading ${filter === "All" ? "products" : filter.toLowerCase()}...`}
+              size="large"
+            />
           ) : filteredProducts.length === 0 ? (
             <div className="no-products">
               <div className="no-products-icon">📦</div>
