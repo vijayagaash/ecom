@@ -253,14 +253,7 @@ const EnhancedCheckout = ({ cartItems, customerId, onOrderSuccess }) => {
                             className="place-order-btn"
                             disabled={loading}
                         >
-                            {loading ? (
-                                <>
-                                    <span className="loading-spinner"></span>
-                                    Processing Order...
-                                </>
-                            ) : (
-                                `Place Order - ₹${calculateTotal().toFixed(2)}`
-                            )}
+                            {loading ? 'Processing Order...' : `Place Order - ₹${calculateTotal().toFixed(2)}`}
                         </button>
                     </form>
                 </div>

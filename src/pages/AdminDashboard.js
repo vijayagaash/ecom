@@ -286,7 +286,6 @@ function AdminDashboard() {
   if (loading) {
     return (
       <div className="admin-loading">
-        <div className="loading-spinner"></div>
         <p>Loading Dashboard...</p>
       </div>
     );
@@ -553,11 +552,13 @@ function AdminDashboard() {
                       className="form-select"
                     >
                       <option value="">Select Category</option>
-                      <option value="T-shirt">T-shirt</option>
-                      <option value="Formals">Formals</option>
-                      <option value="Vest">Vest</option>
-                      <option value="Hoodie">Hoodie</option>
+                      <option value="Electronics">Electronics</option>
+                      <option value="Dress">Dress</option>
                       <option value="Accessories">Accessories</option>
+                      <option value="Kids">Kids</option>
+                      <option value="Stationery">Stationery</option>
+                      <option value="Groceries">Groceries</option>
+                      <option value="Home Appliances">Home Appliances</option>
                     </select>
                   </div>
                   <div className="form-group">

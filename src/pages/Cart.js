@@ -139,9 +139,9 @@ function Cart() {
               </div>
 
               <div className="item-price">
-                <span className="price">₹{item.product?.price || 0}</span>
+                <span className="price">Rs.{item.product?.price || 0}</span>
                 <span className="total-price">
-                  ₹{(item.product?.price || 0) * (item.quantity || 1)}
+                  Rs.{(item.product?.price || 0) * (item.quantity || 1)}
                 </span>
               </div>
 
@@ -150,7 +150,7 @@ function Cart() {
                 className="remove-btn"
                 title="Remove from cart"
               >
-                🗑️
+                Remove
               </button>
             </div>
           ))}
@@ -162,12 +162,12 @@ function Cart() {
             
             <div className="summary-row">
               <span>Subtotal ({cartItems.length} items):</span>
-              <span>₹{calculateSubtotal().toFixed(2)}</span>
+              <span>Rs.{calculateSubtotal().toFixed(2)}</span>
             </div>
             
             <div className="summary-row">
               <span>Tax (18% GST):</span>
-              <span>₹{calculateTax(calculateSubtotal()).toFixed(2)}</span>
+              <span>Rs.{calculateTax(calculateSubtotal()).toFixed(2)}</span>
             </div>
             
             <div className="summary-row">
@@ -179,7 +179,7 @@ function Cart() {
             
             <div className="summary-row total">
               <span>Total:</span>
-              <span>₹{calculateTotal().toFixed(2)}</span>
+              <span>Rs.{calculateTotal().toFixed(2)}</span>
             </div>
 
             <button className="checkout-btn" onClick={() => navigate('/checkout')}>
@@ -187,7 +187,7 @@ function Cart() {
             </button>
 
             <div className="security-info">
-              <small>🔒 Secure checkout with SSL encryption</small>
+              <small>Secure checkout with SSL encryption</small>
             </div>
           </div>
 

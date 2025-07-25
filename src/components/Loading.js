@@ -12,12 +12,7 @@ const Loading = ({
   return (
     <div className={containerClass}>
       <div className="loading-content">
-        <div className="loading-spinner">
-          <div className="spinner-ring"></div>
-          <div className="spinner-ring"></div>
-          <div className="spinner-ring"></div>
-        </div>
-        <div className="loading-text">
+        <div className="simple-loading-text">
           <p className="loading-message">{message}</p>
         </div>
       </div>

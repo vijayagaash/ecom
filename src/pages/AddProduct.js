@@ -6,7 +6,18 @@ import './Admin.css';
 function AddProduct() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  // Hardcoded categories to match Shop.js exactly - CACHE BUSTED VERSION
+  const [categories, setCategories] = useState([
+    'Electronics',
+    'Dress', 
+    'Accessories',
+    'Kids',
+    'Stationery',
+    'Groceries',
+    'Home Appliances'
+  ]);
   const [loading, setLoading] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(Date.now()); // Force refresh with timestamp
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -17,6 +28,7 @@ function AddProduct() {
 
   useEffect(() => {
     fetchProducts();
+    // Categories are now hardcoded, no need to fetch from API
   }, []);
 
   const fetchProducts = () => {
@@ -24,6 +36,40 @@ function AddProduct() {
       .then(res => setProducts(res.data))
       .catch(err => console.error(err));
   };
+
+  // Categories are now hardcoded - keeping this function commented for reference
+  /*
+  const fetchCategories = () => {
+    console.log('Fetching categories from backend...');
+    // Add timestamp to URL to prevent any caching
+    const timestamp = new Date().getTime();
+    const url = `http://localhost:8080/api/products/categories-fresh?t=${timestamp}`;
+    
+    axios.get(url, {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    })
+      .then(res => {
+        console.log('Categories received from backend:', res.data);
+        console.log('Setting categories state to:', res.data);
+        setCategories(res.data);
+        setRefreshKey(prev => prev + 1); // Force component refresh
+        // Force a re-render by updating the key
+        console.log('Categories state updated successfully');
+      })
+      .catch(err => {
+        console.error('Failed to fetch categories:', err);
+        // Fallback to shop categories if API fails
+        const fallbackCategories = ['Electronics', 'Dress', 'Accessories', 'Kids', 'Stationery', 'Groceries', 'Home Appliances'];
+        console.log('Using fallback categories:', fallbackCategories);
+        setCategories(fallbackCategories);
+        setRefreshKey(prev => prev + 1); // Force component refresh
+      });
+  };
+  */
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,6 +82,7 @@ function AddProduct() {
     try {
       await axios.post("http://localhost:8080/api/products", formData);
       await fetchProducts();
+      // Categories are hardcoded, no need to refresh them
       setFormData({ name: '', description: '', price: '', category: '', url: '' });
       alert('Product added successfully!');
     } catch (err) {
@@ -82,7 +129,7 @@ function AddProduct() {
   };
 
   return (
-    <div className="admin-page">
+    <div className="admin-page" key={`admin-page-${refreshKey}`}>
       <div className="admin-form-container">
         <div className="admin-form-header">
           <h2>Add New Product</h2>
@@ -123,18 +170,28 @@ function AddProduct() {
               onChange={handleChange} 
               required 
               className="form-select"
+              key={`category-select-${refreshKey}-${categories.length}`}
             >
               <option value="">Select Category</option>
-              <option value="T-shirt">T-shirt</option>
-              <option value="Formals">Formals</option>
-              <option value="Vest">Vest</option>
-              <option value="Hoodie">Hoodie</option>
-              <option value="Accessories">Accessories</option>
+              {categories.map((category, index) => {
+                console.log('Rendering category option:', category, 'at', new Date().toISOString());
+                return (
+                  <option key={`${category}-${index}-${refreshKey}`} value={category}>
+                    {category}
+                  </option>
+                );
+              })}
             </select>
+            <small className="form-hint">
+              These categories match the shop filters. Choose the appropriate category for proper product display.
+            </small>
+            <div style={{ marginTop: '10px', fontSize: '12px', color: '#666' }}>
+              Categories (updated {new Date().toLocaleTimeString()}): {categories.join(', ')}
+            </div>
           </div>
 
           <div className="form-group">
-            <label className="form-label">Price (₹)</label>
+            <label className="form-label">Price (Rs.)</label>
             <input 
               type="number" 
               name="price" 
@@ -187,7 +244,7 @@ function AddProduct() {
               <h4>{p.name}</h4>
               <p>{p.description}</p>
               <div className="product-details">
-                <span className="price">₹{p.price}</span>
+                <span className="price">Rs.{p.price}</span>
                 <span className="category-tag">
                   {p.category || 'No Category'}
                 </span>

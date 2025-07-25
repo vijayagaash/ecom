@@ -231,11 +231,7 @@ const AIChatbox = ({ isOpen, onClose }) => {
           {isLoading && (
             <div className="message ai-message">
               <div className="message-content">
-                <div className="typing-indicator">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
+                <span>Thinking...</span>
               </div>
             </div>
           )}
@@ -260,11 +256,7 @@ const AIChatbox = ({ isOpen, onClose }) => {
               disabled={!inputMessage.trim() || isLoading}
               className="send-btn"
             >
-              {isLoading ? (
-                <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
-                  <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.4"/>
-                </svg>
-              ) : (
+              {isLoading ? 'Sending...' : (
                 <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
                   <path d="m22 2-7 20-4-9-9-4 20-7z" fill="currentColor"/>
                 </svg>

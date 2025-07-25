@@ -104,14 +104,7 @@ const NetSuiteStatus = ({ order, onStatusUpdate }) => {
                         onClick={handleRetrySync}
                         disabled={retryLoading}
                     >
-                        {retryLoading ? (
-                            <>
-                                <span className="loading-spinner"></span>
-                                Retrying...
-                            </>
-                        ) : (
-                            'Retry NetSuite Sync'
-                        )}
+                        {retryLoading ? 'Retrying...' : 'Retry NetSuite Sync'}
                     </button>
                 </div>
             )}
