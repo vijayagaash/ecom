@@ -37,6 +37,15 @@ function AdminDashboard() {
     emp_password: ''
   });
 
+  // User profile states
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [currentUser, setCurrentUser] = useState({
+    name: 'Admin User',
+    email: 'admin@ecom.com',
+    avatar: null,
+    role: 'Administrator'
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -155,6 +164,44 @@ function AdminDashboard() {
     localStorage.removeItem('adminToken');
     navigate('/admin');
   };
+
+  // Profile dropdown handlers
+  const toggleProfileDropdown = () => {
+    setShowProfileDropdown(!showProfileDropdown);
+  };
+
+  const closeProfileDropdown = () => {
+    setShowProfileDropdown(false);
+  };
+
+  const handleProfileClick = () => {
+    setShowProfileDropdown(false);
+    openModal('userProfile');
+  };
+
+  const handleSettingsClick = () => {
+    setShowProfileDropdown(false);
+    openModal('userSettings');
+  };
+
+  const handlePreferencesClick = () => {
+    setShowProfileDropdown(false);
+    openModal('userPreferences');
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showProfileDropdown && !event.target.closest('.profile-dropdown-container')) {
+        setShowProfileDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showProfileDropdown]);
 
   // Modal handlers
   const openModal = (modalType) => {
@@ -371,6 +418,87 @@ function AdminDashboard() {
             <button className="refresh-btn" onClick={() => window.location.reload()}>
               Refresh
             </button>
+            
+            {/* User Profile Dropdown */}
+            <div className="profile-dropdown-container">
+              <button className="profile-trigger" onClick={toggleProfileDropdown}>
+                <div className="profile-avatar">
+                  {currentUser.avatar ? (
+                    <img src={currentUser.avatar} alt={currentUser.name} />
+                  ) : (
+                    <span className="avatar-initials">
+                      {currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                    </span>
+                  )}
+                </div>
+                <div className="profile-info">
+                  <span className="profile-name">{currentUser.name}</span>
+                  <span className="profile-role">{currentUser.role}</span>
+                </div>
+                <svg className={`dropdown-arrow ${showProfileDropdown ? 'open' : ''}`} 
+                     width="12" height="12" viewBox="0 0 12 12">
+                  <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="2" fill="none"/>
+                </svg>
+              </button>
+
+              {showProfileDropdown && (
+                <div className="profile-dropdown">
+                  <div className="dropdown-header">
+                    <div className="dropdown-avatar">
+                      {currentUser.avatar ? (
+                        <img src={currentUser.avatar} alt={currentUser.name} />
+                      ) : (
+                        <span className="avatar-initials">
+                          {currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+                    <div className="dropdown-user-info">
+                      <div className="dropdown-name">{currentUser.name}</div>
+                      <div className="dropdown-email">{currentUser.email}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="dropdown-divider"></div>
+                  
+                  <div className="dropdown-menu">
+                    <button className="dropdown-item" onClick={handleProfileClick}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2"/>
+                        <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                      My Profile
+                    </button>
+                    
+                    <button className="dropdown-item" onClick={handleSettingsClick}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                      Settings
+                    </button>
+                    
+                    <button className="dropdown-item" onClick={handlePreferencesClick}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                      Preferences
+                    </button>
+                    
+                    <div className="dropdown-divider"></div>
+                    
+                    <button className="dropdown-item logout-item" onClick={handleLogout}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" strokeWidth="2"/>
+                        <polyline points="16,17 21,12 16,7" stroke="currentColor" strokeWidth="2"/>
+                        <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
@@ -706,6 +834,218 @@ function AdminDashboard() {
                   <p>Customer management will be implemented here. Currently showing navigation to dedicated page.</p>
                   <button onClick={() => navigate('/view-customer')} className="btn-primary">
                     Go to Customer Management
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {activeModal === 'userProfile' && (
+              <div className="modal-form">
+                <div className="modal-header">
+                  <h2>My Profile</h2>
+                  <button className="modal-close" onClick={closeModal}>×</button>
+                </div>
+                <div className="profile-modal-content">
+                  <div className="profile-avatar-section">
+                    <div className="profile-avatar-large">
+                      {currentUser.avatar ? (
+                        <img src={currentUser.avatar} alt={currentUser.name} />
+                      ) : (
+                        <span className="avatar-initials-large">
+                          {currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+                    <button className="change-avatar-btn">Change Avatar</button>
+                  </div>
+                  <form className="profile-form">
+                    <div className="form-group">
+                      <label>Full Name</label>
+                      <input
+                        type="text"
+                        value={currentUser.name}
+                        className="form-input"
+                        readOnly
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Email Address</label>
+                      <input
+                        type="email"
+                        value={currentUser.email}
+                        className="form-input"
+                        readOnly
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Role</label>
+                      <input
+                        type="text"
+                        value={currentUser.role}
+                        className="form-input"
+                        readOnly
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Last Login</label>
+                      <input
+                        type="text"
+                        value={new Date().toLocaleDateString()}
+                        className="form-input"
+                        readOnly
+                      />
+                    </div>
+                  </form>
+                  <div className="modal-actions">
+                    <button type="button" onClick={closeModal} className="btn-secondary">
+                      Close
+                    </button>
+                    <button type="button" className="btn-primary">
+                      Edit Profile
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeModal === 'userSettings' && (
+              <div className="modal-form">
+                <div className="modal-header">
+                  <h2>Settings</h2>
+                  <button className="modal-close" onClick={closeModal}>×</button>
+                </div>
+                <div className="settings-modal-content">
+                  <div className="settings-section">
+                    <h3>Security</h3>
+                    <div className="setting-item">
+                      <label>Two-Factor Authentication</label>
+                      <div className="setting-control">
+                        <input type="checkbox" id="2fa" />
+                        <label htmlFor="2fa" className="toggle-switch"></label>
+                      </div>
+                    </div>
+                    <div className="setting-item">
+                      <label>Login Notifications</label>
+                      <div className="setting-control">
+                        <input type="checkbox" id="loginNotifications" defaultChecked />
+                        <label htmlFor="loginNotifications" className="toggle-switch"></label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="settings-section">
+                    <h3>Notifications</h3>
+                    <div className="setting-item">
+                      <label>Email Notifications</label>
+                      <div className="setting-control">
+                        <input type="checkbox" id="emailNotifications" defaultChecked />
+                        <label htmlFor="emailNotifications" className="toggle-switch"></label>
+                      </div>
+                    </div>
+                    <div className="setting-item">
+                      <label>Push Notifications</label>
+                      <div className="setting-control">
+                        <input type="checkbox" id="pushNotifications" />
+                        <label htmlFor="pushNotifications" className="toggle-switch"></label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="settings-section">
+                    <h3>Data & Privacy</h3>
+                    <div className="setting-item">
+                      <button className="setting-button">Download My Data</button>
+                    </div>
+                    <div className="setting-item">
+                      <button className="setting-button danger">Delete Account</button>
+                    </div>
+                  </div>
+                </div>
+                <div className="modal-actions">
+                  <button type="button" onClick={closeModal} className="btn-secondary">
+                    Cancel
+                  </button>
+                  <button type="button" className="btn-primary">
+                    Save Settings
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {activeModal === 'userPreferences' && (
+              <div className="modal-form">
+                <div className="modal-header">
+                  <h2>Preferences</h2>
+                  <button className="modal-close" onClick={closeModal}>×</button>
+                </div>
+                <div className="preferences-modal-content">
+                  <div className="preferences-section">
+                    <h3>Appearance</h3>
+                    <div className="preference-item">
+                      <label>Theme</label>
+                      <select className="form-select">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                        <option value="auto">Auto</option>
+                      </select>
+                    </div>
+                    <div className="preference-item">
+                      <label>Language</label>
+                      <select className="form-select">
+                        <option value="en">English</option>
+                        <option value="hi">Hindi</option>
+                        <option value="es">Spanish</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="preferences-section">
+                    <h3>Dashboard</h3>
+                    <div className="preference-item">
+                      <label>Default View</label>
+                      <select className="form-select">
+                        <option value="overview">Overview</option>
+                        <option value="analytics">Analytics</option>
+                        <option value="reports">Reports</option>
+                      </select>
+                    </div>
+                    <div className="preference-item">
+                      <label>Items per Page</label>
+                      <select className="form-select">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="preferences-section">
+                    <h3>Currency & Region</h3>
+                    <div className="preference-item">
+                      <label>Currency</label>
+                      <select className="form-select">
+                        <option value="INR">₹ Indian Rupee (INR)</option>
+                        <option value="USD">$ US Dollar (USD)</option>
+                        <option value="EUR">€ Euro (EUR)</option>
+                      </select>
+                    </div>
+                    <div className="preference-item">
+                      <label>Time Zone</label>
+                      <select className="form-select">
+                        <option value="IST">India Standard Time (IST)</option>
+                        <option value="UTC">Coordinated Universal Time (UTC)</option>
+                        <option value="PST">Pacific Standard Time (PST)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div className="modal-actions">
+                  <button type="button" onClick={closeModal} className="btn-secondary">
+                    Cancel
+                  </button>
+                  <button type="button" className="btn-primary">
+                    Save Preferences
                   </button>
                 </div>
               </div>

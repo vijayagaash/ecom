@@ -6,7 +6,7 @@ import './Admin.css';
 function AddProduct() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  // Hardcoded categories to match Shop.js exactly - CACHE BUSTED VERSION
+  // Hardcoded categories to match Shop.js exactly
   const [categories, setCategories] = useState([
     'Electronics',
     'Dress', 
@@ -17,7 +17,7 @@ function AddProduct() {
     'Home Appliances'
   ]);
   const [loading, setLoading] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(Date.now()); // Force refresh with timestamp
+  const [refreshKey, setRefreshKey] = useState(0); // Add refresh key to force re-renders
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -170,13 +170,13 @@ function AddProduct() {
               onChange={handleChange} 
               required 
               className="form-select"
-              key={`category-select-${refreshKey}-${categories.length}`}
+              key={`category-select-${Date.now()}-${categories.length}-${JSON.stringify(categories)}`}
             >
               <option value="">Select Category</option>
               {categories.map((category, index) => {
-                console.log('Rendering category option:', category, 'at', new Date().toISOString());
+                console.log('Rendering category option:', category);
                 return (
-                  <option key={`${category}-${index}-${refreshKey}`} value={category}>
+                  <option key={index} value={category}>
                     {category}
                   </option>
                 );
@@ -186,7 +186,7 @@ function AddProduct() {
               These categories match the shop filters. Choose the appropriate category for proper product display.
             </small>
             <div style={{ marginTop: '10px', fontSize: '12px', color: '#666' }}>
-              Categories (updated {new Date().toLocaleTimeString()}): {categories.join(', ')}
+              Categories (hardcoded to match Shop.js): {categories.join(', ')}
             </div>
           </div>
 
